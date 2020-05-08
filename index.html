@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="track.js"></script>
 
 </head>
@@ -22,19 +22,43 @@
     <br>
     <br>
 
+    <script>
+
+
+function connect() {
+axios.get('https://api.tipeeestream.com/v1.0/scenes/remote?apiKey='+ document.getElementById('apitoken').value)
+.then(function (response) {
+   
+  this.infos = response.data;
+          console.log(infos.data.user.username);
+          axios.post('https://www.tipeeestream.com/v2.0/users/'+infos.data.user.username+'/providers?apiKey=' + document.getElementById('apitoken').value, {
+          provider: document.getElementById('prov').value,
+          access_token: document.getElementById('atoken').value,
+          refresh_token: document.getElementById('rtoken').value,
+          origin: 'managementSecurity'
+          })
+          addLine(request.status + " | " + request.responseText); 
+  })
+  .catch(function (error) {
+
+    console.log(error);
+  })
+  
+}
+
+      
+      
+      </script>
 
     <center> 
       <div class="card" style="width: 40rem;">
         <div class="card-body">
          <div><img  src="https://www.tipeeestream.com/img/HPV2/ts_logo_lueur.png" width="290"></div>
 
-         <p class="badge badge-primary">Version 1.0.0 by krasserhacker</p>
+         <p class="badge badge-primary">Version 1.1.0 by krasserhacker</p>
 
          <p></p>
-         <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" placeholder="Enter Username">
-        </div>
+
 
 
 
@@ -54,9 +78,10 @@
 
 
         <p></p>
+        
         <div class="form-group">
           <label for="access_token">access_token</label>
-          <input type="text" class="form-control" id="atoken" placeholder="Enter access_token">
+          <input type="text" class="form-control" id="atoken" required="required" placeholder="Enter access_token">
         </div>
         <p></p>
         <div class="form-group">
@@ -69,10 +94,6 @@
           <label for="access_token">api_token</label>
           <input type="text" class="form-control" id="apitoken" placeholder="Enter api_token">
         </div>
-        <div class="form-group">
-          <label for="Response">Response</label>
-          <textarea readonly style="resize: none;" class="form-control" id="logs" rows="2"></textarea>
-        </div>
 
         <button onclick="connect()" type="button" class="btn btn-primary btn-block">Fire</button>
         <p>   
@@ -80,11 +101,6 @@
         </div>
       </center> 
     </div>
-
-
-
-
-
 
 
   </body>
